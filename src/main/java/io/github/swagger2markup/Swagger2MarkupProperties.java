@@ -40,6 +40,7 @@ public class Swagger2MarkupProperties {
     public static final String MARKUP_LANGUAGE = PROPERTIES_PREFIX + ".markupLanguage";
     public static final String SWAGGER_MARKUP_LANGUAGE = PROPERTIES_PREFIX + ".swaggerMarkupLanguage";
     public static final String GENERATED_EXAMPLES_ENABLED = PROPERTIES_PREFIX + ".generatedExamplesEnabled";
+    public static final String HOSTNAME_ENABLED = PROPERTIES_PREFIX + ".hostnameEnabled";
     public static final String BASE_PATH_PREFIX_ENABLED = PROPERTIES_PREFIX + ".basePathPrefixEnabled";
     public static final String SEPARATED_DEFINITIONS_ENABLED = PROPERTIES_PREFIX + ".separatedDefinitionsEnabled";
     public static final String SEPARATED_OPERATIONS_ENABLED = PROPERTIES_PREFIX + ".separatedOperationsEnabled";
@@ -68,6 +69,7 @@ public class Swagger2MarkupProperties {
     public static final String RESPONSE_ORDER_BY = PROPERTIES_PREFIX + ".responseOrderBy";
     public static final String LINE_SEPARATOR = PROPERTIES_PREFIX + ".lineSeparator";
     public static final String PAGE_BREAK_LOCATIONS = PROPERTIES_PREFIX + ".pageBreakLocations";
+    public static final String ASCIIDOC_PEGDOWN_TIMEOUT = PROPERTIES_PREFIX + ".asciidoc.pegdown.timeoutMillis";
 
     /**
      * Prefix for Swagger2Markup extension properties

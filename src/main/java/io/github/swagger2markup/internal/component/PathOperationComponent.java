@@ -40,6 +40,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import static io.github.swagger2markup.Labels.*;
 import static io.github.swagger2markup.PageBreakLocations.*;
@@ -159,7 +160,7 @@ public class PathOperationComponent extends MarkupComponent<PathOperationCompone
      */
     private void buildDeprecatedSection(MarkupDocBuilder markupDocBuilder, PathOperation operation) {
         if (BooleanUtils.isTrue(operation.getOperation().isDeprecated())) {
-            markupDocBuilder.block(DEPRECATED_OPERATION, MarkupBlockStyle.EXAMPLE, null, MarkupAdmonition.CAUTION);
+            markupDocBuilder.block(labels.getLabel(DEPRECATED_OPERATION), MarkupBlockStyle.EXAMPLE, null, MarkupAdmonition.CAUTION);
         }
     }
 
@@ -407,8 +408,42 @@ public class PathOperationComponent extends MarkupComponent<PathOperationCompone
                 } else if (entry.getKey().equals("path")) {
                     // Path shouldn't have quotes around it
                     markupDocBuilder.listingBlock(entry.getValue().toString());
+                } else if (entry.getKey().equals("header")){
+                    // Header should have format: apikey:"string"
+                    markupDocBuilder.listingBlock(entry.getValue().toString(), "json");
                 } else {
-                    markupDocBuilder.listingBlock(Json.pretty(entry.getValue()), "json");
+                    
+                    Object value = entry.getValue();
+                    
+                    if (value instanceof Map) {
+                        
+                        @SuppressWarnings("unchecked")
+                        Map<String, String> examplesByContentType = (Map<String, String>) value;
+                        
+                        for (Entry<String, String> entryByType : examplesByContentType.entrySet()) {
+                            if (entryByType.getKey().equals("application/json")) {
+                                String example = Json.pretty(entryByType.getValue());
+                                example = stripExampleQuotes(StringEscapeUtils.unescapeJson(example));
+    
+                                markupDocBuilder.listingBlock(example, "json");
+    
+                            } else if (entryByType.getKey().equals("application/xml")) {
+    
+                                String example = stripExampleQuotes(entryByType.getValue().toString());
+                                example = StringEscapeUtils.unescapeJava(example);
+    
+                                //TODO: pretty print XML
+    
+                                markupDocBuilder.listingBlock(example, "xml");
+                            } else {
+                                String example = Json.pretty(entry.getValue());
+                                markupDocBuilder.listingBlock(example, "json");
+                                break; // No need to print the same example multiple times
+                            }
+                        }
+                    } else {
+                        markupDocBuilder.listingBlock(Json.pretty(value), "json");
+                    }
                 }
             }
             if (afterBreak) markupDocBuilder.pageBreak();

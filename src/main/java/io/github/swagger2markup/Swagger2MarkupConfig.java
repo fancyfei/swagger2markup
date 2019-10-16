@@ -46,6 +46,10 @@ public interface Swagger2MarkupConfig {
     boolean isGeneratedExamplesEnabled();
 
     /**
+     * Prepend the hostname to all paths.
+     */
+    boolean isHostnameEnabled();
+    /**
      * Prepend the base path to all paths.
      */
     boolean isBasePathPrefixEnabled();
@@ -240,4 +244,11 @@ public interface Swagger2MarkupConfig {
      * @return List of PageBreakLocations
      */
     List<PageBreakLocations> getPageBreakLocations();
+
+    /**
+     * Returns custom timeout value.
+     *
+     * @return custom timeout value
+     */
+    int getAsciidocPegdownTimeoutMillis();
 }
